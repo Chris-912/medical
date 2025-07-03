@@ -1,9 +1,10 @@
+
 # app.py
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from ai_helper import get_ai_response
-import os
+import requests  # Added for making HTTP requests
 
 app = Flask(__name__)
 CORS(app)
@@ -15,16 +16,19 @@ def check():
     if not symptoms:
         return jsonify({'error': 'No symptoms provided'}), 400
     try:
+        # If you want to call another API in Python, use requests.post(...)
+        # Example:
+        # response = requests.post('http://example.com/other-api', json={'symptoms': symptoms})
+        # result = response.json().get('analysis', 'No analysis found.')
+
+        # Your existing AI helper call
         result = get_ai_response(symptoms)
         return jsonify({'analysis': result})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True, host='0.0.0.0', port=port)
-
-fetch('http://127.0.0.1:5000/check', { ... })
+    app.run(debug=True)
 
 
 
